@@ -59,10 +59,11 @@ func main() {
 		ctx.Redirect(http.StatusFound, "/")
 	})
 
-	router.Static("/static", ".static")
+	router.Static("/static", "./static")
 	router.LoadHTMLGlob("templates/*.html")
 
 	router.GET("/", func(ctx *gin.Context) {
+
 		ctx.HTML(http.StatusOK, "index.html", nil)
 	})
 
@@ -222,7 +223,7 @@ func getTasksHandler(ctx *gin.Context) {
 	rows, err := db.Query("SELECT id, title, description, user_id, start_time, completed_time, completed FROM tasks ORDER BY start_time DESC")
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error()})
+			`error`: err.Error()})
 		return
 	}
 	defer rows.Close()
@@ -238,6 +239,7 @@ func getTasksHandler(ctx *gin.Context) {
 		taskList = append(taskList, task)
 	}
 	if err := rows.Err(); err != nil {
+
 		log.Fatal(err)
 	}
 
